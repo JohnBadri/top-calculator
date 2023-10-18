@@ -14,4 +14,6 @@ let multiplication = (a, b) => a * b;
 // Division function
 let division = (a, b) => a / b;
 
+// Operate function
+let operate = function (operator, fNumber, sNumber) {};
 console.log(division(12, 6));
