@@ -1,5 +1,6 @@
 let displayValue = null;
-let calculatedValue = null;
+let inputValue = null;
+let lastOperator = null;
 const nButtons = document.querySelectorAll(".number");
 const oButtons = document.querySelectorAll(".operator");
 const currentOperand = document.querySelector(".currentOperand");
@@ -24,26 +25,62 @@ let division = (a, b) => a / b;
 let remainder = (a, b) => a % b;
 
 // Operate function
-let operate = function (operator, fNumber, sNumber) {};
+let operate = function (operator, inputValue, displayValue) {
+  let result;
+  switch (operator) {
+    case "+":
+      result = addition(parseFloat(inputValue), parseFloat(displayValue));
+      break;
+    case "-":
+      result = subtraction(parseFloat(inputValue), parseFloat(displayValue));
+      break;
+    case "*":
+      result = multiplication(parseFloat(inputValue), parseFloat(displayValue));
+      break;
+    case "/":
+      if (parseFloat(displayValue) !== 0) {
+        result = division(parseFloat(inputValue), parseFloat(displayValue));
+      } else {
+        result = "Cannot divide by zero";
+      }
+      break;
+    case "%":
+      result = remainder(parseFloat(inputValue), parseFloat(displayValue));
+      break;
+    default:
+      result = "Invalid Operator";
+  }
+  currentOperand.textContent = result;
+  displayValue = result;
+  return result;
+};
 
 equals.addEventListener("click", () => {
-  if (currentOperand.textContent) {
-    calculatedOperand.innerHTML = `${currentOperand.textContent} `;
-    if (calculatedValue) {
-    } else {
-      calculatedValue = calculatedOperand.textContent;
-    }
+  if (lastOperator && inputValue && displayValue !== null) {
+    displayValue = operate(
+      lastOperator,
+      displayValue,
+      currentOperand.textContent
+    );
+    calculatedOperand.textContent = displayValue;
     currentOperand.textContent = null;
+
+    // Reset the lastOperator and inputValue
+    lastOperator = null;
+    inputValue = null;
   }
 });
 
 clear.addEventListener("click", () => {
+  // make everything back to null
   currentOperand.textContent = null;
   calculatedOperand.textContent = null;
-  calculatedValue = null;
+  inputValue = null;
+  displayValue = null;
 });
 
 del.addEventListener("click", () => {
+  // use create array, take out the last number, then make back to string.
   if (currentOperand.textContent) {
     let arr = currentOperand.textContent.slice(0, -1);
     currentOperand.textContent = arr;
@@ -52,7 +89,9 @@ del.addEventListener("click", () => {
 
 nButtons.forEach((button) => {
   button.addEventListener("click", () => {
+    // dont let input more than 18 numbers
     if (currentOperand.textContent.length < 18) {
+      // allow input of numbers in input field
       currentOperand.textContent += button.textContent;
     }
   });
@@ -61,11 +100,17 @@ nButtons.forEach((button) => {
 oButtons.forEach((button) => {
   button.addEventListener("click", () => {
     if (currentOperand.textContent) {
-      calculatedOperand.innerHTML = `${currentOperand.textContent} <span style='font-size: 14px;'>${button.textContent}</span>`;
-      if (calculatedValue) {
+      inputValue = currentOperand.textContent;
+      // If we already have an operator pressed, perform that calculation
+      if (lastOperator && displayValue !== null) {
+        displayValue = operate(lastOperator, displayValue, inputValue);
       } else {
-        calculatedValue = calculatedOperand.textContent;
+        // If no operator has been pressed yet, set the display value
+        displayValue = inputValue;
       }
+      lastOperator = button.id;
+      // Update display
+      calculatedOperand.innerHTML = `${displayValue} <span style='font-size: 14px;'>${button.textContent}</span>`;
       currentOperand.textContent = null;
     }
   });
