@@ -1,6 +1,6 @@
 # The Odin Project: Calculator
 
-Live Demo - https://johnbadri.github.io/top-calculator/
+Live Demo - https://johnbadri.github.io/top-todo/dist/
 
 A simple web calculator built with vanilla JavaScript, HTML, and CSS as a project for The Odin Project curriculum.
 
