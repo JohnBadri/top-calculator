@@ -11,10 +11,6 @@ A simple web calculator built with vanilla JavaScript, HTML, and CSS as a projec
 - Calculation display updates in real-time.
 - Responsive design for various screen sizes.
 
-## Setup
-
-Open the `index.html` file in a web browser to use the calculator.
-
 ## Features
 
 - Input validation to prevent entering more than 18 digits.
